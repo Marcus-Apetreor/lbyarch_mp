@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <string.h>
+#include <windows.h>
 #include <time.h>
 
 // neeed to fix assembly linking
