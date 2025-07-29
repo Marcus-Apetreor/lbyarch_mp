@@ -5,7 +5,7 @@
 #include <windows.h>
 #include <time.h>
 
-// neeed to fix assembly linking
+// need to fix assembly linking
 extern void imgCvtGrayFloatToInt(const float* src, uint8_t* dst, int width, int height);
 
 void printImage(const uint8_t* img, int width, int height) {
