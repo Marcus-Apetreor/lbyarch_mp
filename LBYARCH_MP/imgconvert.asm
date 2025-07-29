@@ -1,38 +1,39 @@
-section.text
 section .data
-    float_255: dd 255.0
-    float_0_5: dd 0.5
+scalar_255: dd 255.0
+
+section .text
+bits 64
+default rel
 global imgCvtGrayFloatToInt
 
-; void imgCvtGrayFloatToInt(const float* src, uint8_t* dst, int width, int height)
 imgCvtGrayFloatToInt:
-    ; rcx = src, rdx = dst, r8 = width, r9 = height
+    ; RCX = f_img (float*)
+    ; RDX = i_img (uint8_t*)
+    ; R8  = size (int)
+
     push rbp
-    mov rbp, rsp
-
-    mov rsi, rcx        ; src pointer
-    mov rdi, rdx        ; dst pointer
-    mov eax, r8d        ; width
-    imul eax, r9d       ; eax = width * height
-    mov ecx, 0          ; pixel index
-
-    movss xmm1, dword [rel float_255]   ; xmm1 = 255.0f
-    movss xmm2, dword [rel float_0_5]   ; xmm2 = 0.5f
+    push rsi
+    push rdi
+    mov rsi, rcx ; rsi = f_img (float img)
+    mov rdi, rdx ; rdi = i_img (int8 img)
+    mov ecx, r8d ; ecx = size (use ecx for loop)
+    xor rbx, rbx ; rbx = loop idx
 
 .loop:
-    cmp ecx, eax
+    cmp rbx, rcx
     jge .done
 
-    movss xmm0, dword [rsi + rcx*4]     ; xmm0 = src[ecx]
-    mulss xmm0, xmm1                    ; xmm0 *= 255.0f
-    addss xmm0, xmm2                    ; xmm0 += 0.5f
-    cvttss2si edx, xmm0                 ; edx = (int)xmm0
-    mov dl, dl                          ; zero-extend to 8 bits
-    mov [rdi + ecx], dl                 ; dst[ecx] = (uint8_t)edx
+    movss xmm0, dword [rsi + rbx*4] ; load float
+    movss xmm1, dword [rel scalar_255] ; xmm1 = 255.0
+    mulss xmm0, xmm1 ; xmm0 *= 255.0
+    cvttss2si eax, xmm0 ; eax = int(round(xmm0))
+    mov [rdi + rbx], al ; store in int buffer
 
-    inc ecx
+    inc rbx
     jmp .loop
 
 .done:
+    pop rdi
+    pop rsi
     pop rbp
     ret
