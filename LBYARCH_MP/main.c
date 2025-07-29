@@ -4,7 +4,7 @@
 #include <string.h>
 #include <time.h>
 
-// Assembly function prototype
+// neeed to fix assembly linking
 extern void imgCvtGrayFloatToInt(const float* src, uint8_t* dst, int width, int height);
 
 void printImage(const uint8_t* img, int width, int height) {
@@ -38,10 +38,8 @@ int main() {
         float* src = (float*)malloc(width * height * sizeof(float));
         uint8_t* dst = (uint8_t*)malloc(width * height * sizeof(uint8_t));
 
-        // Initialize random float image
         for (int i = 0; i < width * height; ++i) src[i] = randFloat();
 
-        // Timing
         double total = 0.0;
         for (int i = 0; i < 30; ++i) {
             clock_t start = clock();
@@ -52,14 +50,12 @@ int main() {
         double avg = total / 30.0;
         printf("Size: %dx%d, Avg time: %.2f us\n", width, height, avg);
 
-        // Correctness check
         if (!checkCorrectness(src, dst, width, height)) {
-            printf("Output incorrect!\n");
+            printf("incorrect!\n");
         } else {
-            printf("Output correct.\n");
+            printf("correct\n");
         }
 
-        // Print output for small size
         if (width * height <= 100) {
             printImage(dst, width, height);
         }
