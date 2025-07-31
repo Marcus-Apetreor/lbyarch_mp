@@ -54,6 +54,7 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
+    <Import Project="$(VCTargetsPath)\BuildCustomizations\masm.props" />
   </ImportGroup>
   <ImportGroup Label="Shared">
   </ImportGroup>
@@ -129,6 +130,9 @@
       <FileType>Document</FileType>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\NASM\nasm -f win64 imgconvert.asm</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">imgconvert.obj</Outputs>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Users\Leomarc\Desktop\Y3T3\LBYARCH\SASM\Windows\NASM\nasm -fwin64 imgconvert.asm</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">imgconvert.obj</Outputs>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
@@ -136,5 +140,6 @@
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
+    <Import Project="$(VCTargetsPath)\BuildCustomizations\masm.targets" />
   </ImportGroup>
 </Project>
