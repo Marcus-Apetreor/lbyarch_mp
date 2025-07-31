@@ -39,3 +39,8 @@ The main observation we can have from the benchmarks is that the small number of
 * **The Assembly Implementation:** The assembly code, however, performs a *strict, exact comparison*. It checks if the fractional part is identical to `0.75` and will not consider `0.74999999` a match.
 
 The number of mismatches changes with each run because the input data is randomly generated, altering the probability of encountering these specific edge-case values.
+
+<video width="400" controls>
+  <source src="LBYARCH.mkv" type="video/mkv">
+  Your browser does not support the video tag.
+</video>
