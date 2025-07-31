@@ -40,4 +40,4 @@ The main observation we can have from the benchmarks is that the small number of
 
 The number of mismatches changes with each run because the input data is randomly generated, altering the probability of encountering these specific edge-case values.
 
-![Watch the video](LBYARCH.mkv)
+[BENCHMARK VIDEO](LBYARCH.mkv)
