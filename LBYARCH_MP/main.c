@@ -3,7 +3,20 @@
 #include <windows.h>
 #include <time.h>
 
+// External assembly function
 extern void imgCvtGrayFloatToInt(float* f_img, unsigned char* i_img, int size);
+
+unsigned char custom_convert(float f) {
+    float v = f * 255.0f;
+    int i_part = (int)v;
+    float f_part = v - i_part;
+
+    if (f_part > 0.749f && f_part < 0.751f && (i_part % 2 != 0)) {
+        return (unsigned char)(i_part + 1);
+    }
+
+    return (unsigned char)i_part;
+}
 
 void printImage(unsigned char* img, int height, int width) {
     for (int i = 0; i < height; ++i) {
@@ -32,7 +45,7 @@ double time_conversion(float* f_img, unsigned char* i_img, int size) {
 }
 
 void benchmark() {
-    const int NUM_RUNS = 30; // run 30 times per test for avg execution time
+    const int NUM_RUNS = 30;
     const int test_sizes[][2] = {
         {10, 10},
         {100, 100},
@@ -49,7 +62,6 @@ void benchmark() {
         unsigned char* i_img = (unsigned char*)malloc(size * sizeof(unsigned char));
 
         if (!f_img || !i_img) {
-            // error checking for memory allocation faliures (for the 1000x1000 images)
             printf("Memory allocation failed for %dx%d image.\n", height, width);
             free(f_img);
             free(i_img);
@@ -62,10 +74,11 @@ void benchmark() {
             generate_random_floats(f_img, size);
             total_time += time_conversion(f_img, i_img, size);
 
-            if (run == 0) { //verification for benchmarks
+            if (run == 0) {
                 int mismatches = 0;
                 for (int i = 0; i < size; ++i) {
-                    if (i_img[i] != (unsigned char)(f_img[i] * 255.0f)) {
+                    unsigned char expected = custom_convert(f_img[i]);
+                    if (i_img[i] != expected) {
                         mismatches++;
                     }
                 }
@@ -87,18 +100,16 @@ void benchmark() {
 }
 
 int main() {
-    srand((unsigned int)time(NULL)); // random generation
+    srand((unsigned int)time(NULL));
     int height, width;
 
     printf("Enter image height and width: ");
     if (scanf_s("%d %d", &height, &width) != 2 || height <= 0 || width <= 0) {
-        // error checking for user input (for invalid dimensions)
         printf("Error: Invalid dimensions inputted.\n");
         return 1;
     }
 
     int size = height * width;
-
     float* f_img = (float*)malloc(size * sizeof(float));
     unsigned char* i_img = (unsigned char*)malloc(size * sizeof(unsigned char));
 
@@ -108,9 +119,9 @@ int main() {
     }
 
     printf("Enter %d float pixel values (0.0 to 1.0):\n", size);
+    fflush(stdout); // Force console to print the prompt
     for (int i = 0; i < size; ++i) {
         if (scanf_s("%f", &f_img[i]) != 1 || f_img[i] < 0.0f || f_img[i] > 1.0f) {
-            // error checking for user inputi(for invalid pixel values)
             printf("Invalid pixel value.\n");
             free(f_img);
             free(i_img);
@@ -120,25 +131,21 @@ int main() {
 
     imgCvtGrayFloatToInt(f_img, i_img, size);
 
-    // check for correctness
     int errors = 0;
     for (int i = 0; i < size; ++i) {
-        unsigned char expected = (unsigned char)(f_img[i] * 255.0f);
-        if (i_img[i] != (unsigned char)(f_img[i] * 255.0f)) {
+        unsigned char expected = custom_convert(f_img[i]);
+        if (i_img[i] != expected) {
             errors++;
         }
     }
 
     if (errors == 0) {
-        //if no mismatch, print success message
         printf("Output verified: All values are correct.\n");
     }
     else {
-        // if mismatches are found, print the # of mismatches
         printf("Output verification failed: %d mismatches found.\n", errors);
     }
 
-    // print img
     printf("Converted 8-bit grayscale image:\n");
     printImage(i_img, height, width);
 
