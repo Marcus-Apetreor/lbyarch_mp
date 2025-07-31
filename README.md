@@ -1,5 +1,5 @@
 # LBYARCH-MP2: Grayscale Conversion in C & x86 Assembly
-
+## [VIDEO LINK](https://drive.google.com/file/d/1xmQll-IKjJ2Dff-0yVjXhy0uqyhQicAz/view?usp=sharing)
 ## Project Overview
 
 This project is an implementation of a grayscale image conversion utility that transforms a single-precision float representation (values from 0.0 to 1.0) into an 8-bit unsigned integer representation (values from 0 to 255). The conversion logic is written in x86-64 assembly language and is called from a C host program responsible for handling I/O and benchmarking.
@@ -39,5 +39,3 @@ The main observation we can have from the benchmarks is that the small number of
 * **The Assembly Implementation:** The assembly code, however, performs a *strict, exact comparison*. It checks if the fractional part is identical to `0.75` and will not consider `0.74999999` a match.
 
 The number of mismatches changes with each run because the input data is randomly generated, altering the probability of encountering these specific edge-case values.
-
-[YOU CAN CLICK THIS FOR THE DRIVE LINK OF THE VIDEO](https://drive.google.com/file/d/1xmQll-IKjJ2Dff-0yVjXhy0uqyhQicAz/view?usp=sharing)
