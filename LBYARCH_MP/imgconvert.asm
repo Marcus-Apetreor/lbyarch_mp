@@ -14,8 +14,8 @@ imgCvtGrayFloatToInt:
     push rdi
     mov rsi, rcx    ; rsi = f_img (float img)
     mov rdi, rdx    ; rdi = i_img (int8 img)
-    mov ecx, r8d    ; ecx = size (use ecx for loop)
-    xor rbx, rbx    ; rbx for loop check
+    mov ecx, r8d    ; ecx = size
+    xor rbx, rbx    ; rbx for loop
 
 .loop:
     cmp rbx, rcx
