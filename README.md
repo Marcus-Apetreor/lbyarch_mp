@@ -8,8 +8,8 @@ This project is an implementation of a grayscale image conversion utility that t
 
 The primary challenge of this project was due to the given example input and output.
 There was not a consistent rounding method we cold employ in order to properly follow the problem specifications.
-If we chose **TRUNCATION**, then 0.25*255 = 63.75 ---> does not make sense to become 64.
-If we chose **ROUNDING**, then 0.45*255 = 144.75 ---> does not make sense to become 144.
+If we chose **TRUNCATION**, then 0.25 x 255 = 63.75 ---> does not make sense to become 64.
+If we chose **ROUNDING**, then 0.45 x 255 = 144.75 ---> does not make sense to become 144.
 
 THE FINAL CONVERSION ALGORITHM we decided to do is Truncation but with a specific rule when the fractional part is somewhere within .75.
 
